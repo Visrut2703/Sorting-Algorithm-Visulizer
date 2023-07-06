@@ -7,17 +7,23 @@
     margin-top : auto;
     margin-bottom: auto;
     margin-left: 20px;
+    font-size: 20px;
     padding: 10px;
     height: 30px;
+    width: 150px;
+}
+.btn2{
+    width: 100px;
 }
 .name{
     color: white;
-    font-size: 30px;
+    font-size: 25px;
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 50px;
+
+    margin-left:6px;
 }
-#container {
+#container {    
     display: flex;
     width: 99%;
     min-width: 99%;
@@ -30,11 +36,10 @@
     color : white;  
     margin-top: 15px;
     margin-bottom: auto;
-    margin-left : auto;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 .sortOp{
-    margin-left: 20px;
+    margin-left: 10px;
     margin-top: 20px
 }
 .bar {
@@ -56,7 +61,7 @@
     flex-direction: column;
     /* align-self: flex-end; */
     position: absolute;
-        top: 90%;
+        top: 80%;
         left: 50%;
     transform: translate(-50%, -50%);
     /* border: 2px solid red; */
@@ -129,5 +134,16 @@
     font-size: 30px;
     margin-top : auto;
     margin-bottom: auto;
-    margin-left: 15px;
+    margin-left: 10px;
+}
+.cent {
+    width: 10%; /* Can be in percentage also. */
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+}
+
+.start{
+    margin-top: 80px;
 }

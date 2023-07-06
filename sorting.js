@@ -1,7 +1,7 @@
 bars = [];
 barValues = [];
 heights = [];
-
+// hello
 var slider = document.getElementById("myRange");
 var slider1 = document.getElementById("myRange1");
 let n = slider.value;
