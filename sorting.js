@@ -15,10 +15,8 @@ function getRandomValue(min, max) {
 }
 let isStopped = false;
 async function generateArray() {
-    // isStopped = true;
-    container.innerHTML = "";
-    // console.log("Ele in heights " + heights.length);
     isStopped = true;
+    container.innerHTML = "";
     for (let i = 0; i < n; i++) {
         heights[i] = parseInt(getRandomValue(1, height));
         bars[i] = document.createElement('div');
@@ -37,86 +35,57 @@ async function generateArray() {
             container.appendChild(barValues[i]);
         }
     }
-
-    await sleep(delay);
-    if(r1.checked){
-        isStopped = false;
-        bubbleSort();
-    }
-    if(r2.checked){
-        isStopped = false;
-
-        selectionSort();
-    }
-    if(r3.checked){
-        isStopped = false;
-
-        insertionSort();
-    }
-    if(r4.checked){
-        isStopped = false;
-
-        mergeSort();
-    }
-    if(r5.checked)
-    {   
-        isStopped = false;
-
-        quickSortIterative(heights , 0 , heights.length-1);
-    }
+    isStopped = false;
 }
 
 
 //Selection Sort Option
-let r1 , r2 ,r3 ,r4 ,r5;
-async function select(){
+let r1, r2, r3, r4, r5;
+async function select() {
     isStopped = true;
-     r1 = document.getElementById('bubbleSort');
-     r2 = document.getElementById('selectionSort');
-     r3 = document.getElementById('insertionSort');
-     r4 = document.getElementById('mergeSort');
-     r5 = document.getElementById('quickSort');
-     generateArray();
-    // if(r1.checked){
-    //     await generateArray();
-    //     bubbleSort();
-    // }
-    // if(r2.checked){
-    //     await generateArray();
+    await sleep(delay);
+    r1 = document.getElementById('bubbleSort');
+    r2 = document.getElementById('selectionSort');
+    r3 = document.getElementById('insertionSort');
+    r4 = document.getElementById('mergeSort');
+    r5 = document.getElementById('quickSort');
 
-    //     selectionSort();
-    // }
-    // if(r3.checked){
-    //     await generateArray();
+    if (r1.checked) {
+        await generateArray();
+        bubbleSort();
+    }
+    if (r2.checked) {
+        await generateArray();
+        selectionSort();
+    }
+    if (r3.checked) {
+        await generateArray();
 
-    //     insertionSort();
-    // }
-    // if(r4.checked){
-    //     await generateArray();
-    //     mergeSort();
-    // }
-    // if(r5.checked)
-    // {   
-    //     await generateArray();
-    //     quickSortIterative(heights , 0 , heights.length-1);
-    // }
+        insertionSort();
+    }
+    if (r4.checked) {
+        await generateArray();
+        mergeSort();
+    }
+    if (r5.checked) {
+        await generateArray();
+        quickSortIterative(heights, 0, heights.length - 1);
+    }
 }
 //Slider
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-  n = this.value;
-  barWidth = width/n-1;
-  isStopped = true;
-  generateArray();
-//   console.log(n);
+slider.oninput = function () {
+    n = this.value;
+    barWidth = width / n - 1;
+    isStopped = true;
+    generateArray();
+    //   console.log(n);
 }
-// Update the current slider value (each time you drag the slider handle)
-slider1.oninput = function() {
-  isStopped = true;
-  delay = 1000 - this.value;
-  generateArray();
-//   console.log("dealay " +delay);
-//   console.log("Elements " +n);
+slider1.oninput = function () {
+    isStopped = true;
+    delay = 1000 - this.value;
+    generateArray();
+    //   console.log("dealay " +delay);
+    //   console.log("Elements " +n);
 }
 
 generateArray();
@@ -146,22 +115,26 @@ function colors(coloum, color) {
 }
 function swap(i, minindex) {
     [heights[i], heights[minindex]] = [heights[minindex], heights[i]];
-  
+
     [bars[i], bars[minindex]] = [bars[minindex], bars[i]];
     [bars[i].style.transform, bars[minindex].style.transform] = [bars[minindex].style.transform, bars[i].style.transform];
-  
+
     [barValues[i], barValues[minindex]] = [barValues[minindex], barValues[i]];
     [barValues[i].style.transform, barValues[minindex].style.transform] = [
-      barValues[minindex].style.transform,
-      barValues[i].style.transform,
+        barValues[minindex].style.transform,
+        barValues[i].style.transform,
     ];
-  }
-  
+}
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 //Information about Colors
 async function colorInfo(color, colInfo) {
+    if (isStopped) {
+        colors([], []);
+        return;
+    }
     console.log("Color-Info");
     let col1 = document.createElement('div');
     col1.className = 'col-box';
@@ -176,9 +149,9 @@ async function colorInfo(color, colInfo) {
     return col1;
 }
 //Bubble Sort
-async function bubbleSort() { 
-    if(!r1.checked)
-    return;
+async function bubbleSort() {
+    if (!r1.checked)
+        return;
     sorted = [];
     sortedCol = [];
     let sing = document.createElement('div');
@@ -191,16 +164,25 @@ async function bubbleSort() {
     for (let i = 0; i < n - 1; i++) {
         for (let j = 0; j < n - i - 1; j++) {
             console.log(j);
-            if(isStopped){
-                colors([] , []);
+            if (isStopped) {
+                colors([], []);
                 return;
             }
             if (heights[j] > heights[j + 1]) {
-                swap(j, j+1);
+                swap(j, j + 1);
             }
             colors([j, j + 1, ...sorted], ["red", "blue", ...sortedCol]);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
             await sleep(delay);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
         }
+
         sorted[i] = n - i - 1;
         sortedCol[i] = 'yellow';
     }
@@ -212,8 +194,8 @@ async function bubbleSort() {
 
 //Selection Sort
 async function selectionSort() {
-    if(!r2.checked)
-    return;
+    if (!r2.checked)
+        return;
     console.log("Selection Sort");
     sorted = [];
     sortedCol = [];
@@ -230,8 +212,8 @@ async function selectionSort() {
         let minn = heights[i];
         let ind = i;
         for (j = i + 1; j < n; j++) {
-            if(isStopped){
-                colors([] , []);
+            if (isStopped) {
+                colors([], []);
                 return;
             }
             if (heights[j] < minn) {
@@ -241,7 +223,15 @@ async function selectionSort() {
 
             colors([i, j, ind, ...sorted], ["red", "blue", "green", ...sortedCol]);
             console.log(ind);
-            await sleep(500);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
+            await sleep(delay);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
         }
         swap(i, ind);
         sorted[i] = i;
@@ -265,8 +255,8 @@ async function insertionSort() {
     container.appendChild(sing);
 
     for (i = 1; i < n; i++) {
-        if(isStopped){
-            colors([] , []);
+        if (isStopped) {
+            colors([], []);
             return;
         }
         let key = heights[i];
@@ -277,9 +267,25 @@ async function insertionSort() {
             colors([i, j], ["red", "green"]);
             console.log(j);
             j--;
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
             await sleep(delay);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
+        }
+        if (isStopped) {
+            colors([], []);
+            return;
         }
         await sleep(delay);
+        if (isStopped) {
+            colors([], []);
+            return;
+        }
     }
     reset();
 
@@ -291,8 +297,8 @@ async function insertionSort() {
 //Merge Sort
 
 async function mergeSort() {
-    if(!r4.checked)
-    return;
+    if (!r4.checked)
+        return;
 
     sorted = [];
     sortedCol = [];
@@ -308,8 +314,8 @@ async function mergeSort() {
     var curr_size;
     for (curr_size = 1; curr_size <= n - 1; curr_size = 2 * curr_size) {
         for (let l = 0; l < n - 1; l += 2 * curr_size) {
-            if(isStopped){
-                colors([] , []);
+            if (isStopped) {
+                colors([], []);
                 return;
             }
             var m = Math.min(l + curr_size - 1, n - 1);
@@ -339,55 +345,66 @@ async function mergeSort() {
             console.log(i, j, n1, n2);
 
             while (i < n1 && j < n2) {
-                if(isStopped){
-                    colors([] , []);
+                if (isStopped) {
+                    if (isStopped) {
+                        colors([], []);
+                        return;
+                    }
+                    colors([], []);
                     return;
                 }
                 // console.log("HERE");
                 if (L[i] <= R[j]) {
+                    if (isStopped) {
+                        colors([], []);
+                        return;
+                    }
                     colors([k, ...base], ['green', ...col]);
                     i++;
                 } else {
                     for (let i1 = m + 1 + j; i1 > k; i1--) {
                         swap(i1, i1 - 1);
                     }
+                    if (isStopped) {
+                        colors([], []);
+                        return;
+                    }
                     colors([k, ...base], ['green', ...col]);
                     j++;
+                }
+                if (isStopped) {
+                    colors([], []);
+                    return;
                 }
                 await sleep(delay);
                 k++;
             }
-
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
 
             await sleep(delay);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
         }
     }
     reset();
 }
 // mergeSort();
 
-async function partition(arr, low, high) {
-    let temp;
-   
-}
-
-/* A[] --> Array to be sorted,
-l --> Starting index,
-h --> Ending index */
-
-
 async function quickSortIterative() {
-    if(!r5.checked)
-    return;
+    if (!r5.checked)
+        return;
+
     arr = heights;
     l = 0;
-    h = n-1;
+    h = n - 1;
     console.log("Arr " + arr);
-    // Create an auxiliary stack
     let stack = new Array(h - l + 1);
     stack.fill(0);
-
-    // initialize top of stack
     let top = -1;
     let sing = document.createElement('div');
     sing.className = 'sing';
@@ -396,12 +413,8 @@ async function quickSortIterative() {
     sing.appendChild(await colorInfo('red', 'Comparing Element'));
     sing.appendChild(await colorInfo('blue', 'Comparing Element'));
 
-
-    // sing.innerHTML = 'Green - Pivot' + "<br/>\n" + "Yellow - Range of Search" + "<br/>\n" + "Blue and Red - Searching" ;
     container.appendChild(sing);
 
-    // push initial values of l and h to
-    // stack
     stack[++top] = l;
     stack[++top] = h;
     base = []
@@ -414,14 +427,23 @@ async function quickSortIterative() {
     i = 1;
 
     colors(base, col);
-    // console.log("Top " + top);
-    await sleep(delay + 500);
+    console.log("Top " + top);
+    if (isStopped) {
+        colors([], []);
+        return;
+    }
+    console.log('1');
+    // await sleep(delay + 500);
+    if (isStopped) {
+        colors([], []);
+        return;
+    }
     while (top >= 0) {
-        // Pop h and l
-        if(isStopped){
-            colors([] , []);
+        if (isStopped) {
+            colors([], []);
             return;
         }
+
         h = stack[top--];
         l = stack[top--];
         for (i = l; i <= h; i++) {
@@ -429,7 +451,16 @@ async function quickSortIterative() {
             col[i - l] = 'yellow';
         }
         colors(base, col);
+        console.log('1');
+        if (isStopped) {
+            colors([], []);
+            return;
+        }
         await sleep(delay);
+        if (isStopped) {
+            colors([], []);
+            return;
+        }
         console.log("Top " + top);
         i = i - 2;
         let high = h;
@@ -437,36 +468,50 @@ async function quickSortIterative() {
         let pivot = arr[high];
         base = [high];
         col = ["green"];
-        if(isStopped){
-            colors([] , []);
+        if (isStopped) {
+            colors([], []);
             return;
         }
-        // index of smaller element
         let t = (low - 1);
-    
+
         base[2] = t;
         col[2] = "blue";
         for (let j = low; j <= high - 1; j++) {
-            // If current element is smaller
-            // than or equal to pivot
+
             base[1] = j;
             col[1] = "red";
             colors(base, col);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
             await sleep(delay);
+            if (isStopped) {
+                colors([], []);
+                return;
+            }
             if (arr[j] <= pivot) {
                 t++;
                 base[2] = t;
                 swap(t, j);
                 colors(base, col);
+                if (isStopped) {
+                    colors([], []);
+                    return;
+                }
                 await sleep(delay);
+                if (isStopped) {
+                    colors([], []);
+                    return;
+                }
             }
         }
-    
+
         swap(t + 1, high);
         console.log("lat" + t + 1);
         p = 1 + t;
-        if(isStopped){
-            colors([] , []);
+        if (isStopped) {
+            colors([], []);
             return;
         }
         console.log(p);
@@ -483,5 +528,3 @@ async function quickSortIterative() {
     }
     reset();
 }
-
-
